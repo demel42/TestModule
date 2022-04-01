@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-trait ModuleTemplateLocalLib
+trait TestModuleLocalLib
 {
     public static $IS_INVALIDCONFIG = IS_EBASE + 1;
 

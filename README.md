@@ -24,22 +24,10 @@
 
 ### a. Installation des Moduls
 
-Im [Module Store](https://www.symcon.de/service/dokumentation/komponenten/verwaltungskonsole/module-store/) ist das Modul unter dem Suchbegriff *ModuleTemplate* zu finden.<br>
-Alternativ kann das Modul über [Module Control](https://www.symcon.de/service/dokumentation/modulreferenz/module-control/) unter Angabe der URL `https://github.com/demel42/ModuleTemplate.git` installiert werden.
+Im [Module Store](https://www.symcon.de/service/dokumentation/komponenten/verwaltungskonsole/module-store/) ist das Modul unter dem Suchbegriff *TestModule* zu finden.<br>
+Alternativ kann das Modul über [Module Control](https://www.symcon.de/service/dokumentation/modulreferenz/module-control/) unter Angabe der URL `https://github.com/demel42/TestModule.git` installiert werden.
 
 ### b. Einrichtung in IPS
-
-#### ModuleTemplate IO
-In IP-Symcon nun unterhalb von _I/O Instanzen_ die Funktion _Instanz hinzufügen_ auswählen und als Hersteller _Warema_ angeben.
-In der IO-Instanz muss nur der Hostname/die IP-Adresse des WebControl angegeben werden.
-Mittels _Zugriff prüfen_ kann getestet werden (Hinweis: dauert ein paar Sekunden)
-
-#### ModuleTemplate Config
-In IP-Symcon nun unterhalb von _Konfigurator Instanzen_ die Funktion _Instanz hinzufügen_ auswählen und als Hersteller _Warema_ angeben.
-In dem Konfigurator werden nun alle eingerichteten Räume/Kanäle aufgelistet; eine Anlage der Geräte-Instanz kann entsprechend erfolgen
-
-#### ModuleTemplate Device
-Die Geräte-Instanz wird über dem Konfigurator angelegt. In der _Basis-Konfiguration_ ist Raum/Kanal sowie der Produkt-Typ eingetragen. Achtung: die Warema-Komponenten werden via Raum+Kanal angesprochen, bei Änderung der Zuordnung muss das ggfs. nachgeführt werden.
 
 ## 4. Funktionsreferenz
 
@@ -47,7 +35,7 @@ alle Funktionen sind über _RequestAction_ der jew. Variablen ansteuerbar
 
 ## 5. Konfiguration
 
-### ModuleTemplate Device
+### TestModule Device
 
 #### Properties
 
@@ -72,9 +60,9 @@ Es werden folgende Variablenprofile angelegt:
 ## 6. Anhang
 
 ### GUIDs
-- Modul: `{0DCE4B6F-9176-DC9A-5502-1AF2B7573EB5}`
+- Modul: `{E6FC697B-BC75-1CF1-F773-5BC8D7FE9B8F}`
 - Instanzen:
-  - ModuleTemplateDevice: `{B052AEAB-2687-02EB-DF40-74191E242A0B}`
+  - TestModuleDevice: `{09A2F3FA-5CC8-ADF2-254D-39A8E3261D70}`
 - Nachrichten:
 
 ### Quellen
