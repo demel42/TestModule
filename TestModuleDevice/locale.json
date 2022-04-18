@@ -1,15 +1,37 @@
 {
 	"translations": {
 		"de": {
-			"Instance has no active parent instance": "Instanz hat keine aktive übergeordnete Instanz",
-			"Disable instance": "Instanz deaktivieren",
+			"TestModule Device": "TestModule Device",
 
-			"Test area": "Test-Bereich",
+			"The following system prerequisites are missing": "Folgende Systemvoraussetzungen fehlen",
+
+			"The following points of the configuration are incorrect": "Die folgenden Punkte der Konfiguration sind fehlerhaft",
+
+			"Still something to do to complete the update": "Es ist noch etwas zu tun, um das Update abzuschließen",
+			"old version": "alte Version",
+			"new version": "neue Version",
+			"unknwon": "unbekannt",
+			"Press button 'Complete update' to carry out the required work": "Taste 'Update abschliessen' betätigen um die erforderlichen Arbeiten auszuführen",
+			"Complete update": "Update abschliessen",
+
+			"Status: Symcon Connect is OK!": "Status: Symcon Connect ist OK!",
+			"Error: Symcon Connect is not active!": "Fehler: Symcon Connect ist nicht aktiv!",
+
+			"Instance has no active parent instance": "Instanz hat keine aktive übergeordnete Instanz",
+
+
+			"Disable instance": "Instanz deaktivieren",
+			"Update interval": "Aktualisierungsintervall",
+			"Seconds": "Sekunden",
+
+			"Update status": "Aktualisiere Status",
 
 			"Expert area": "Experten-Bereich",
 			"Re-install variable-profiles": "Variablenprofile erneut einrichten",
 
 			"Information": "Information",
+
+			"Test area": "Test-Bereich",
 
 			"Category": "Kategorie",
 			"Instance": "Instanz",
@@ -32,6 +54,12 @@
 			"Area": "Bereich",
 			"Name": "Bezeichnung",
 			"Open object": "Objekt öffnen",
+			"Timer": "Timer",
+			"Interval": "Intervall",
+			"Next run": "nächste Ausführung",
+			"Last run": "letzte Ausführung",
+			"Timer information": "Timer-Information",
+			"Refresh references panel": "Referenzen-Panel aktualisieren",
 
 			"Instance getting created": "Instanz wird erstellt",
 			"Instance is active": "Instanz ist aktiv",
@@ -39,7 +67,10 @@
 			"Instance is inactive": "Instanz ist inaktiv",
 			"Instance is not created": "Instanz wurde nicht erzeugt",
 
-			"Instance is inactive (invalid configuration)": "Instanz ist inaktiv (ungültige Konfiguration)"
+			"Instance is inactive (invalid preconditions)": "Instanz ist inaktiv (ungültige Voraussetzungen)",
+			"Instance is inactive (update not completed)": "Instanz ist inaktiv (Update nicht abgeschlossen)",
+			"Instance is inactive (invalid configuration)": "Instanz ist inaktiv (ungültige Konfiguration)",
+			"Instance is inactive (deactivated)": "Instanz ist inaktiv (deaktiviert)"
 		}
 	}
 }

@@ -1,12 +1,12 @@
 {
-    "id": "{09A2F3FA-5CC8-ADF2-254D-39A8E3261D70}",
-    "name": "TestModule Device",
-    "type": 3,
-    "vendor": "",
-    "aliases": [],
-    "parentRequirements": [],
-    "childRequirements": [],
-    "implemented": [],
-    "prefix": "TESTMODULE",
-    "url": "https://github.com/demel42/TestModule/blob/master/README.md"
+	"id": "{09A2F3FA-5CC8-ADF2-254D-39A8E3261D70}",
+	"name": "TestModule Device",
+	"type": 3,
+	"vendor": "",
+	"aliases": [],
+	"parentRequirements": [],
+	"childRequirements": [],
+	"implemented": [],
+	"prefix": "TESTMODULE",
+	"url": "https://github.com/demel42/TestModule/blob/master/README.md"
 }

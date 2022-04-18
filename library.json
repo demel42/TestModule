@@ -1,12 +1,12 @@
 {
-    "id": "{E6FC697B-BC75-1CF1-F773-5BC8D7FE9B8F}",
-    "name": "TestModule",
-    "author": "Ch. Damsky",
-    "url": "https://github.com/demel42/TestModule.git",
-    "compatibility": {
-        "version": "6.0"
-    },
-    "version": "1.0",
-    "build": 0,
-    "date": 1648311261
+	"id": "{E6FC697B-BC75-1CF1-F773-5BC8D7FE9B8F}",
+	"name": "TestModule",
+	"author": "Ch. Damsky",
+	"url": "https://github.com/demel42/TestModule.git",
+	"compatibility": {
+		"version": "6.0"
+	},
+	"version": "1.0",
+	"build": 1,
+	"date": 1648311261
 }
