@@ -55,11 +55,17 @@ class TestModuleDevice extends IPSModule
     {
         $r = [];
 
+        @$varID = $this->GetIDForIdent('UpdateTest');
+        if (@$varID != false) {
+            $r[] = $this->Translate('Delete variable \'UpdateTest\'');
+        }
+
         return $r;
     }
 
     private function CompleteModuleUpdate(array $oldInfo, array $newInfo)
     {
+        $this->UnregisterVariable('UpdateTest');
         return true;
     }
 
@@ -154,7 +160,13 @@ class TestModuleDevice extends IPSModule
         $formActions[] = [
             'type'    => 'Button',
             'caption' => 'Update status',
-            'onClick' => 'AutomowerConnect_UpdateStatus($id);'
+            'onClick' => 'TestModule_UpdateStatus($id);'
+        ];
+
+        $formActions[] = [
+            'type'    => 'Button',
+            'caption' => 'Reset update',
+            'onClick' => 'TestModule_ResetUpdate($id);'
         ];
 
         $formActions[] = [
@@ -165,7 +177,7 @@ class TestModuleDevice extends IPSModule
                 [
                     'type'    => 'Button',
                     'caption' => 'Re-install variable-profiles',
-                    'onClick' => 'WMS_InstallVarProfiles($id, true);'
+                    'onClick' => 'TestModule_InstallVarProfiles($id, true);'
                 ],
             ],
         ];
@@ -185,6 +197,16 @@ class TestModuleDevice extends IPSModule
         $formActions[] = $this->GetReferencesFormAction();
 
         return $formActions;
+    }
+
+    public function ResetUpdate()
+    {
+        $info = ['Version' => '0.9', 'Build' => 0, 'Date' => 1650201234];
+        $this->WriteAttributeString('UpdateInfo', json_encode($info));
+
+        $this->MaintainVariable('UpdateTest', 'update test', VARIABLETYPE_INTEGER, '~UnixTimestampDate', 0, true);
+
+        IPS_ApplyChanges($this->InstanceID);
     }
 
     private function SetUpdateInterval(int $sec = null)
