@@ -15,18 +15,18 @@ trait TestModuleLocalLib
 
     private function GetFormStatus()
     {
-        $formStatus = [];
+        $formStatus = [
+            ['code' => IS_CREATING, 'icon' => 'inactive', 'caption' => 'Instance getting created'],
+            ['code' => IS_ACTIVE, 'icon' => 'active', 'caption' => 'Instance is active'],
+            ['code' => IS_DELETING, 'icon' => 'inactive', 'caption' => 'Instance is deleted'],
+            ['code' => IS_INACTIVE, 'icon' => 'inactive', 'caption' => 'Instance is inactive'],
+            ['code' => IS_NOTCREATED, 'icon' => 'inactive', 'caption' => 'Instance is not created'],
 
-        $formStatus[] = ['code' => IS_CREATING, 'icon' => 'inactive', 'caption' => 'Instance getting created'];
-        $formStatus[] = ['code' => IS_ACTIVE, 'icon' => 'active', 'caption' => 'Instance is active'];
-        $formStatus[] = ['code' => IS_DELETING, 'icon' => 'inactive', 'caption' => 'Instance is deleted'];
-        $formStatus[] = ['code' => IS_INACTIVE, 'icon' => 'inactive', 'caption' => 'Instance is inactive'];
-        $formStatus[] = ['code' => IS_NOTCREATED, 'icon' => 'inactive', 'caption' => 'Instance is not created'];
-
-        $formStatus[] = ['code' => self::$IS_INVALIDPREREQUISITES, 'icon' => 'error', 'caption' => 'Instance is inactive (invalid preconditions)'];
-        $formStatus[] = ['code' => self::$IS_UPDATEUNCOMPLETED, 'icon' => 'error', 'caption' => 'Instance is inactive (update not completed)'];
-        $formStatus[] = ['code' => self::$IS_INVALIDCONFIG, 'icon' => 'error', 'caption' => 'Instance is inactive (invalid configuration)'];
-        $formStatus[] = ['code' => self::$IS_DEACTIVATED, 'icon' => 'inactive', 'caption' => 'Instance is inactive (deactivated)'];
+            ['code' => self::$IS_INVALIDPREREQUISITES, 'icon' => 'error', 'caption' => 'Instance is inactive (invalid preconditions)'],
+            ['code' => self::$IS_UPDATEUNCOMPLETED, 'icon' => 'error', 'caption' => 'Instance is inactive (update not completed)'],
+            ['code' => self::$IS_INVALIDCONFIG, 'icon' => 'error', 'caption' => 'Instance is inactive (invalid configuration)'],
+            ['code' => self::$IS_DEACTIVATED, 'icon' => 'inactive', 'caption' => 'Instance is inactive (deactivated)'],
+        ];
 
         return $formStatus;
     }

@@ -69,5 +69,5 @@ Es werden folgende Variablenprofile angelegt:
 
 ## 7. Versions-Historie
 
-- 0.9 @ dd.mm.yyyy HH:MM (beta)
+- 1.0 @ 18.04.2022 13:36 (beta)
   - Initiale Version
