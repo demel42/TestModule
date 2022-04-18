@@ -55,6 +55,8 @@ class TestModuleDevice extends IPSModule
     {
         $r = [];
 
+        $r[] = 'BLA';
+
         return $r;
     }
 
@@ -117,12 +119,7 @@ class TestModuleDevice extends IPSModule
     {
         $formElements = $this->GetCommonFormElements('ModulTemplate Device');
 
-        @$s = $this->CheckUpdate();
-        if ($s != '') {
-            $formElements[] = [
-                'type'    => 'Label',
-                'caption' => $s,
-            ];
+        if ($this->GetStatus() == self::$IS_UPDATEUNCOMPLETED) {
             return $formElements;
         }
 
@@ -147,8 +144,7 @@ class TestModuleDevice extends IPSModule
     {
         $formActions = [];
 
-        @$s = $this->CheckUpdate();
-        if ($s) {
+        if ($this->GetStatus() == self::$IS_UPDATEUNCOMPLETED) {
             $formActions[] = $this->GetCompleteUpdateFormAction();
 
             $formActions[] = $this->GetInformationFormAction();
