@@ -55,8 +55,6 @@ class TestModuleDevice extends IPSModule
     {
         $r = [];
 
-        $r[] = 'BLA';
-
         return $r;
     }
 
