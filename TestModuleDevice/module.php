@@ -66,7 +66,7 @@ class TestModuleDevice extends IPSModule
     private function CompleteModuleUpdate(array $oldInfo, array $newInfo)
     {
         $this->UnregisterVariable('UpdateTest');
-        return true;
+        return '';
     }
 
     public function ApplyChanges()
