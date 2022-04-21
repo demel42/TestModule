@@ -55,9 +55,11 @@ class TestModuleDevice extends IPSModule
     {
         $r = [];
 
-        @$varID = $this->GetIDForIdent('UpdateTest');
-        if (@$varID != false) {
-            $r[] = $this->Translate('Delete variable \'UpdateTest\'');
+        if ($this->version2num($oldInfo) < $this->version2num('1.0.2')) {
+            @$varID = $this->GetIDForIdent('UpdateTest');
+            if (@$varID != false) {
+                $r[] = $this->Translate('Delete variable \'UpdateTest\'');
+            }
         }
 
         return $r;
@@ -65,7 +67,10 @@ class TestModuleDevice extends IPSModule
 
     private function CompleteModuleUpdate(array $oldInfo, array $newInfo)
     {
-        $this->UnregisterVariable('UpdateTest');
+        if ($this->version2num($oldInfo) < $this->version2num('1.0.2')) {
+            $this->UnregisterVariable('UpdateTest');
+        }
+
         return '';
     }
 
