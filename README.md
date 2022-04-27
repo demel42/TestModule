@@ -69,5 +69,8 @@ Es werden folgende Variablenprofile angelegt:
 
 ## 7. Versions-Historie
 
-- 1.0.1 @ 19.04.2022 07:55 (beta)
+- 1.0.2 @ 27.04.2022 16:41 (test)
+  - Überlagerung von Translate und Aufteilung von locale.json in 3 translation.json (Modul, libs und CommonStubs)
+
+- 1.0.1 @ 19.04.2022 07:55
   - Initiale Version
