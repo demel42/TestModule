@@ -34,5 +34,11 @@ trait TestModuleLocalLib
         if ($reInstall) {
             $this->SendDebug(__FUNCTION__, 'reInstall=' . $this->bool2str($reInstall), 0);
         }
+
+        $associations = [
+            ['Wert' => false, 'Name' => 'No', 'Farbe' => -1],
+            ['Wert' => true, 'Name' => 'Yes', 'Farbe' => -1],
+        ];
+        $this->CreateVarProfile('TestModule.YesNo', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 0, '', $associations, $reInstall);
     }
 }

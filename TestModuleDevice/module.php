@@ -10,6 +10,15 @@ class TestModuleDevice extends IPSModule
     use TestModule\StubsCommonLib;
     use TestModuleLocalLib;
 
+	private $ModuleDir;
+
+    public function __construct(string $InstanceID)
+    {
+        parent::__construct($InstanceID);
+
+		$this->ModuleDir = __DIR__;
+    }
+
     public function Create()
     {
         parent::Create();
@@ -19,11 +28,12 @@ class TestModuleDevice extends IPSModule
         $this->RegisterPropertyInteger('update_interval', 60);
 
         $this->RegisterAttributeString('UpdateInfo', '');
+
         $this->RegisterAttributeString('external_update_interval', '');
 
         $this->InstallVarProfiles(false);
 
-        $this->RegisterTimer('UpdateStatus', 0, 'TestModule_UpdateStatus(' . $this->InstanceID . ');');
+        $this->RegisterTimer('UpdateStatus', 0, $this->GetModulePrefix() . '_UpdateStatus(' . $this->InstanceID . ');');
 
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
     }
@@ -78,7 +88,7 @@ class TestModuleDevice extends IPSModule
     {
         parent::ApplyChanges();
 
-		$this->MaintainReferences();
+        $this->MaintainReferences();
 
         if ($this->CheckPrerequisites() != false) {
             $this->MaintainTimer('UpdateStatus', 0);
@@ -98,12 +108,13 @@ class TestModuleDevice extends IPSModule
             return;
         }
 
+        // Maintain Variables
         $vops = 0;
 
         $module_disable = $this->ReadPropertyBoolean('module_disable');
         if ($module_disable) {
             $this->MaintainTimer('UpdateStatus', 0);
-            $this->SetStatus(self::$IS_DEACTIVATED);
+            $this->SetStatus(IS_INACTIVE);
             return;
         }
 
@@ -116,7 +127,7 @@ class TestModuleDevice extends IPSModule
 
     protected function GetFormElements()
     {
-        $formElements = $this->GetCommonFormElements('ModulTemplate Device');
+        $formElements = $this->GetCommonFormElements('TestModul Device');
 
         if ($this->GetStatus() == self::$IS_UPDATEUNCOMPLETED) {
             return $formElements;
@@ -155,13 +166,13 @@ class TestModuleDevice extends IPSModule
         $formActions[] = [
             'type'    => 'Button',
             'caption' => 'Update status',
-            'onClick' => 'TestModule_UpdateStatus($id);'
+            'onClick' => $this->GetModulePrefix() . '_UpdateStatus($id);'
         ];
 
         $formActions[] = [
             'type'    => 'Button',
             'caption' => 'Reset update',
-            'onClick' => 'TestModule_ResetUpdate($id);'
+            'onClick' => $this->GetModulePrefix() . '_ResetUpdate($id);'
         ];
 
         $formActions[] = [
@@ -172,7 +183,7 @@ class TestModuleDevice extends IPSModule
                 [
                     'type'    => 'Button',
                     'caption' => 'Re-install variable-profiles',
-                    'onClick' => 'TestModule_InstallVarProfiles($id, true);'
+                    'onClick' => $this->GetModulePrefix() . '_InstallVarProfiles($id, true);'
                 ],
             ],
         ];
