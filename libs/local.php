@@ -36,8 +36,8 @@ trait TestModuleLocalLib
         }
 
         $associations = [
-            ['Wert' => false, 'Name' => 'No', 'Farbe' => -1],
-            ['Wert' => true, 'Name' => 'Yes', 'Farbe' => -1],
+            ['Wert' => false, 'Name' => $this->Translate('No'), 'Farbe' => -1],
+            ['Wert' => true, 'Name' => $this->Translate('Yes'), 'Farbe' => -1],
         ];
         $this->CreateVarProfile('TestModule.YesNo', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 0, '', $associations, $reInstall);
     }
