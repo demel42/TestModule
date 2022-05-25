@@ -69,7 +69,10 @@ Es werden folgende Variablenprofile angelegt:
 
 ## 7. Versions-Historie
 
-- 1.0.2 @ 27.04.2022 16:41 (test)
+- 1.1 @ 25.05.2022 17:29
+  - interne Funktionen sind nun entweder private oder nur noch via IPS_RequestAction() erreichbar
+
+- 1.0.2 @ 27.04.2022 16:41
   - Überlagerung von Translate und Aufteilung von locale.json in 3 translation.json (Modul, libs und CommonStubs)
 
 - 1.0.1 @ 19.04.2022 07:55

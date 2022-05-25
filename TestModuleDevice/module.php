@@ -10,13 +10,13 @@ class TestModuleDevice extends IPSModule
     use TestModule\StubsCommonLib;
     use TestModuleLocalLib;
 
-	private $ModuleDir;
+    private $ModuleDir;
 
     public function __construct(string $InstanceID)
     {
         parent::__construct($InstanceID);
 
-		$this->ModuleDir = __DIR__;
+        $this->ModuleDir = __DIR__;
     }
 
     public function Create()
@@ -33,7 +33,7 @@ class TestModuleDevice extends IPSModule
 
         $this->InstallVarProfiles(false);
 
-        $this->RegisterTimer('UpdateStatus', 0, $this->GetModulePrefix() . '_UpdateStatus(' . $this->InstanceID . ');');
+        $this->RegisterTimer('UpdateStatus', 0, 'IPS_RequestAction(' . $this->InstanceID . ', "UpdateStatus", "");');
 
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
     }
@@ -81,7 +81,7 @@ class TestModuleDevice extends IPSModule
             $this->UnregisterVariable('UpdateTest');
         }
 
-        return '';
+        return false;
     }
 
     public function ApplyChanges()
@@ -150,6 +150,15 @@ class TestModuleDevice extends IPSModule
         return $formElements;
     }
 
+    private function TestMessage()
+    {
+        $text = 'Test-Nachricht' . PHP_EOL;
+        $text .= '' . PHP_EOL;
+        $text .= 'Zeile 1' . PHP_EOL;
+        $text .= 'Zeile 2' . PHP_EOL;
+        $this->PopupMessage($text);
+    }
+
     protected function GetFormActions()
     {
         $formActions = [];
@@ -166,13 +175,19 @@ class TestModuleDevice extends IPSModule
         $formActions[] = [
             'type'    => 'Button',
             'caption' => 'Update status',
-            'onClick' => $this->GetModulePrefix() . '_UpdateStatus($id);'
+            'onClick' => 'IPS_RequestAction($id, "UpdateStatus", "");',
+        ];
+
+        $formActions[] = [
+            'type'    => 'Button',
+            'caption' => 'Test message',
+            'onClick' => 'IPS_RequestAction($id, "TestMessage", "");',
         ];
 
         $formActions[] = [
             'type'    => 'Button',
             'caption' => 'Reset update',
-            'onClick' => $this->GetModulePrefix() . '_ResetUpdate($id);'
+            'onClick' => 'IPS_RequestAction($id, "ResetUpdate", "");',
         ];
 
         $formActions[] = [
@@ -180,11 +195,7 @@ class TestModuleDevice extends IPSModule
             'caption'   => 'Expert area',
             'expanded ' => false,
             'items'     => [
-                [
-                    'type'    => 'Button',
-                    'caption' => 'Re-install variable-profiles',
-                    'onClick' => $this->GetModulePrefix() . '_InstallVarProfiles($id, true);'
-                ],
+                $this->GetInstallVarProfilesFormItem(),
             ],
         ];
 
@@ -205,7 +216,7 @@ class TestModuleDevice extends IPSModule
         return $formActions;
     }
 
-    public function ResetUpdate()
+    private function ResetUpdate()
     {
         $info = ['Version' => '0.9', 'Build' => 0, 'Date' => 1650201234];
         $this->WriteAttributeString('UpdateInfo', json_encode($info));
@@ -236,7 +247,7 @@ class TestModuleDevice extends IPSModule
         $this->SetUpdateInterval($sec);
     }
 
-    public function UpdateStatus()
+    private function UpdateStatus()
     {
         if ($this->CheckStatus() == self::$STATUS_INVALID) {
             $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
@@ -269,6 +280,15 @@ class TestModuleDevice extends IPSModule
 
         $r = false;
         switch ($ident) {
+            case 'UpdateStatus':
+                $this->UpdateStatus();
+                break;
+            case 'ResetUpdate':
+                $this->ResetUpdate();
+                break;
+            case 'TestMessage':
+                $this->TestMessage();
+                break;
             default:
                 $this->SendDebug(__FUNCTION__, 'invalid ident ' . $ident, 0);
                 break;
