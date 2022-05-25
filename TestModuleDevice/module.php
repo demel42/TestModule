@@ -125,7 +125,7 @@ class TestModuleDevice extends IPSModule
         }
     }
 
-    protected function GetFormElements()
+    private function GetFormElements()
     {
         $formElements = $this->GetCommonFormElements('TestModul Device');
 
@@ -159,7 +159,7 @@ class TestModuleDevice extends IPSModule
         $this->PopupMessage($text);
     }
 
-    protected function GetFormActions()
+    private function GetFormActions()
     {
         $formActions = [];
 
