@@ -28,10 +28,18 @@ class TestModuleDevice extends IPSModule
 
         $this->RegisterPropertyBoolean('module_disable', false);
 
+        $this->RegisterPropertyInteger('initial_size', 5 * 1024);
+        $this->RegisterPropertyInteger('increment_interval', 100);
+        $this->RegisterPropertyInteger('step_interval', 60);
+
+        $this->RegisterAttributeString('data_attribute', json_encode([]));
+
         $this->RegisterAttributeString('UpdateInfo', json_encode([]));
         $this->RegisterAttributeString('ModuleStats', json_encode([]));
 
         $this->InstallVarProfiles(false);
+
+        $this->RegisterTimer('StepTimer', 0, 'IPS_RequestAction(' . $this->InstanceID . ', "DoStep", "");');
 
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
     }
@@ -41,11 +49,7 @@ class TestModuleDevice extends IPSModule
         parent::MessageSink($timestamp, $senderID, $message, $data);
 
         if ($message == IPS_KERNELMESSAGE && $data[0] == KR_READY) {
-        }
-
-        if (IPS_GetKernelRunlevel() == KR_READY) {
-            $this->SendDebug(__FUNCTION__, 'timestamp=' . $timestamp . ', senderID=' . $senderID . ', message=' . $message . ', data=' . print_r($data, true), 0);
-            $this->SendDebug(__FUNCTION__, '_IP=' . print_r($_IPS, true), 0);
+            $this->SetStepInterval();
         }
     }
 
@@ -54,11 +58,6 @@ class TestModuleDevice extends IPSModule
         parent::ApplyChanges();
 
         $this->MaintainReferences();
-
-        $messageIds = [
-            KL_CUSTOM,
-        ];
-        $this->UnregisterMessages($messageIds);
 
         if ($this->CheckPrerequisites() != false) {
             $this->SetStatus(self::$IS_INVALIDPREREQUISITES);
@@ -81,12 +80,14 @@ class TestModuleDevice extends IPSModule
         $module_disable = $this->ReadPropertyBoolean('module_disable');
         if ($module_disable) {
             $this->SetStatus(IS_INACTIVE);
+            $this->MaintainTimer('StepTimer', 0);
             return;
         }
 
         $this->SetStatus(IS_ACTIVE);
 
         if (IPS_GetKernelRunlevel() == KR_READY) {
+            $this->SetStepInterval();
         }
     }
 
@@ -102,6 +103,27 @@ class TestModuleDevice extends IPSModule
             'type'    => 'CheckBox',
             'name'    => 'module_disable',
             'caption' => 'Disable instance'
+        ];
+
+        $formElements[] = [
+            'type'    => 'NumberSpinner',
+            'name'    => 'initial_size',
+            'suffix'  => 'KB',
+            'minimum' => 0,
+            'caption' => 'Estimated initial size of Attribute',
+        ];
+        $formElements[] = [
+            'type'    => 'NumberSpinner',
+            'name'    => 'increment_interval',
+            'minimum' => 0,
+            'caption' => 'Steps between increment of size',
+        ];
+        $formElements[] = [
+            'type'    => 'NumberSpinner',
+            'name'    => 'step_interval',
+            'suffix'  => 'Seconds',
+            'minimum' => 0,
+            'caption' => 'Step interval',
         ];
 
         return $formElements;
@@ -120,10 +142,28 @@ class TestModuleDevice extends IPSModule
             return $formActions;
         }
 
+        $formActions[] = [
+            'type'    => 'Button',
+            'caption' => 'Do step',
+            'onClick' => 'IPS_RequestAction($id, "DoStep", "");',
+        ];
+
+        $formActions[] = [
+            'type'    => 'Button',
+            'caption' => 'Clear attribute',
+            'onClick' => 'IPS_RequestAction($id, "ClearAttribute", "");',
+        ];
+
         $formActions[] = $this->GetInformationFormAction();
         $formActions[] = $this->GetReferencesFormAction();
 
         return $formActions;
+    }
+
+    private function SetStepInterval()
+    {
+        $sec = $this->ReadPropertyInteger('step_interval');
+        $this->MaintainTimer('StepTimer', $sec * 1000);
     }
 
     private function LocalRequestAction($ident, $value)
@@ -131,6 +171,12 @@ class TestModuleDevice extends IPSModule
         $r = true;
 
         switch ($ident) {
+            case 'DoStep':
+                $this->DoStep();
+                break;
+            case'ClearAttribute':
+                $this->WriteAttributeString('data_attribute', json_encode([]));
+                break;
             default:
                 $r = false;
                 break;
@@ -163,5 +209,57 @@ class TestModuleDevice extends IPSModule
         if ($r) {
             $this->SetValue($ident, $value);
         }
+    }
+
+    private function DoStep()
+    {
+        if ($this->CheckStatus() == self::$STATUS_INVALID) {
+            $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
+            return;
+        }
+
+        $data = $this->ReadAttributeString('data_attribute');
+        $old_size = strlen($data);
+        if ($data == json_encode([])) {
+            $initial_size = $this->ReadPropertyInteger('initial_size');
+            $e = [
+                'tstamp' => time(),
+                'data'   => str_pad(date('d.m.y H:i:s') . ' ', 69, '-'),
+            ];
+            $l = strlen(json_encode($e));
+            $n = (int) ($initial_size * 1024 / $l);
+            $list = [];
+            for ($i = 0; $i < $n; $i++) {
+                $list[] = $e;
+            }
+            $mode = 'initial';
+            $step = 0;
+        } else {
+            $jdata = json_decode($data, true);
+            $e = [
+                'tstamp' => time(),
+                'data'   => str_pad(date('d.m.y H:i:s') . ' ', 69, '-'),
+            ];
+            $step = $jdata['step'];
+            $list = $jdata['list'];
+            $increment_interval = $this->ReadPropertyInteger('increment_interval');
+            if ($step % $increment_interval) {
+                $list[count($list) - 1] = $e;
+                $mode = 'update';
+            } else {
+                $list[] = $e;
+                $mode = 'increase';
+            }
+            $step++;
+        }
+        $jdata = [
+            'step' => $step,
+            'list' => $list,
+        ];
+        $data = json_encode($jdata);
+        $new_size = strlen($data);
+        $this->WriteAttributeString('data_attribute', $data);
+        $this->SendDebug(__FUNCTION__, 'mode=' . $mode . ', step=' . $step . ', size=' . $new_size . ($old_size != $new_size ? ('(old=' . $old_size . ')') : ''), 0);
+        $this->SendDebug(__FUNCTION__, $this->PrintTimer('StepTimer'), 0);
     }
 }

@@ -69,6 +69,9 @@ Es werden folgende Variablenprofile angelegt:
 
 ## 7. Versions-Historie
 
+- 1.3 @ 17.10.2023 09:21
+  - Test Speicherverbrauch
+
 - 1.2 @ 15.09.2023 10:23
   - update submodule CommonStubs
 
