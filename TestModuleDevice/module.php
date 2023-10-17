@@ -243,7 +243,7 @@ class TestModuleDevice extends IPSModule
             $step = $jdata['step'];
             $list = $jdata['list'];
             $increment_interval = $this->ReadPropertyInteger('increment_interval');
-            if ($step % $increment_interval) {
+            if ($increment_interval == 0 || ($step % $increment_interval)) {
                 $list[count($list) - 1] = $e;
                 $mode = 'update';
             } else {
