@@ -69,7 +69,7 @@ Es werden folgende Variablenprofile angelegt:
 
 ## 7. Versions-Historie
 
-- 1.2 @ 15.09.2023 10:23
+- 1.2 @ 03.11.2023 11:06
   - update submodule CommonStubs
 
 - 1.1 @ 25.05.2022 17:29
